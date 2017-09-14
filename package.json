@@ -1,0 +1,28 @@
+{
+  "name": "webpack3-es3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./dist/main.js",
+  "scripts": {
+    "webpack-ver": "webpack -v",
+    "build:dev": "webpack --env",
+    "build:prod": "webpack --env.prod",
+    "run": "webpack-dev-server --env",
+    "uglify": "uglifyjs ./dist/main.js -c -m -o ./dist/main2.min.js --ie8"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^1 || ^2 || ^3.2.1"
+  },
+  "devDependencies": {
+    "css-loader": "^0.28.5",
+    "file-loader": "^0.11.2",
+    "html-loader": "^0.5.1",
+    "style-loader": "^0.18.2",
+    "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.5.5",
+    "webpack-dev-server": "^2.7.1"
+  }
+}
