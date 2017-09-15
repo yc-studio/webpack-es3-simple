@@ -50,18 +50,16 @@ module.exports = function (env, argv) {
                 {
                     test: /\.css$/,
                     use: [
-                        {loader: 'style'},
-                        {
-                            loader: 'css',
-                        }
+                        'style-loader',
+                        'css-loader'
                     ]
                 },
                 //图片文件使用 url-loader 来处理，小于8kb的直接转为base64
                 {
                     test: /\.(png|jpg)$/,
-                    use: 'url?limit=1&name=assets/[name]-[hash:6].[ext]'
+                    use: 'url-loader?limit=1&name=assets/[name]-[hash:6].[ext]'
                 },
-                {test: /\.html$/, use: 'html'}
+                {test: /\.html$/, use: ['html-loader']}
             ],
         },
         plugins: plugins,
