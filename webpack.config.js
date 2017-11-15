@@ -1,8 +1,12 @@
-// var HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 var webpack = require('webpack'); //to access built-in plugins
 var path = require('path');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+const NODE_PATH = process.env.NODE_PATH;
 
+if (!NODE_PATH) {
+    console.error('Undefined ENV "NODE_PATH"');
+    process.exit();
+}
 
 module.exports = function (env, argv) {
 
@@ -67,5 +71,11 @@ module.exports = function (env, argv) {
             jquery: "jQuery",
             jQuery: "jQuery"
         },
+        resolveLoader: {
+            modules: [
+                NODE_PATH,
+                "node_modules"
+            ]
+        }
     };
 };

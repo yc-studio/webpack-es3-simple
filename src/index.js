@@ -1,4 +1,6 @@
 var test = require('./test');
+require('./assets/index.css');
+
 console.log("test", test);
 
 var a = {

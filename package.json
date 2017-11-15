@@ -1,26 +1,18 @@
 {
-  "name": "webpack3-es3",
+  "name": "webpack3-es3-npm-global-simple",
   "version": "1.0.0",
-  "description": "",
+  "description": "devDependencies 迁移`npm -g` 方案,避免每个项目环境都安装 webpack",
+  "author": "",
+  "license": "MIT",
   "main": "./dist/main.js",
   "scripts": {
+    "init-webpack": "npm -g i \"webpack@^3\" \"webpack-dev-server@^2\" css-loader \"style-loader@0.18.2\" file-loader url-loader html-loader \"uglifyjs-webpack-plugin@^1\"",
     "build:dev": "webpack --env",
     "build:prod": "webpack --env.prod",
     "run": "webpack-dev-server --env",
     "uglify": "uglifyjs ./dist/main.js -c -m -o ./dist/main2.min.js --ie8"
   },
-  "license": "MIT",
   "dependencies": {
     "jquery": "^1 || ^2 || ^3.2.1"
-  },
-  "devDependencies": {
-    "css-loader": "^0.28.5",
-    "file-loader": "^0.11.2",
-    "html-loader": "^0.5.1",
-    "style-loader": "^0.18.2",
-    "uglifyjs-webpack-plugin": "^1.0.0-beta.2",
-    "url-loader": "^0.5.9",
-    "webpack": "^3.5.5",
-    "webpack-dev-server": "^2.7.1"
   }
 }
