@@ -6,32 +6,14 @@ var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = function (env, argv) {
 
-    const PRODUCTION = env.hasOwnProperty('prod');
-
     var plugins = [
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
         }),
     ];
-    if (PRODUCTION) {
-
-        //配置选项参考： https://webpack.js.org/plugins/uglifyjs-webpack-plugin/#options
-        plugins.push(new UglifyJSPlugin({
-            uglifyOptions: {
-                ie8: true,
-                ecma: 6,
-                parse: {},
-                mangle: {
-                },
-                compress: {},
-            },
-            sourceMap: true,
-        }));
-    }
 
     return {
-        devtool: "cheap-source-map",
         devServer: {
             publicPath: "/dist/"
         },
@@ -67,5 +49,18 @@ module.exports = function (env, argv) {
             jquery: "jQuery",
             jQuery: "jQuery"
         },
+        optimization: {
+            minimizer: [
+                new UglifyJSPlugin({
+                    uglifyOptions: {
+                        ie8: true,
+                        parse: {},
+                        mangle: {},
+                        compress: {},
+                    },
+                    sourceMap: true,
+                })
+            ]
+        }
     };
 };
