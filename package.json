@@ -4,12 +4,13 @@
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
-    "build": "webpack --mode=production",
-    "run": "webpack-dev-server"
+    "build": "webpack -p --mode=production",
+    "start": "webpack-serve --mode=development"
   },
   "license": "MIT",
   "dependencies": {
-    "jquery": "^1 || ^2 || ^3.2.1"
+    "jquery": "^1 || ^2 || ^3.2.1",
+    "webpack-serve": "^1.0.2"
   },
   "devDependencies": {
     "css-loader": "^0.28.5",
@@ -19,7 +20,6 @@
     "style-loader": "^0.18.2",
     "url-loader": "^0.5.9",
     "webpack": "^4.10.2",
-    "webpack-command": "^0.2.0",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-command": "^0.2.0"
   }
 }

@@ -1,33 +1,37 @@
 // var HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 var webpack = require('webpack'); //to access built-in plugins
-var path = require('path');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = function (env, argv) {
+    var IS_DEV = env && env.mode === 'development';
+    console.log('Dev: ', IS_DEV);
 
-    var plugins = [
-        new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-        }),
-        new MiniCssExtractPlugin({
-            // Options similar to the same options in webpackOptions.output
-            // both options are optional
-            filename: "[name].css",
-            chunkFilename: "[id].css"
-        }),
-    ];
+    var extendOptions = IS_DEV ?
+        { //Development options
+            mode: 'development',
+            devtool: 'cheap-eval-source-map'
+        } :
+        { //Production options
+            mode: 'production',
+            optimization: {
+                minimizer: [
+                    new UglifyJSPlugin({
+                        uglifyOptions: {
+                            ie8: true,
+                        },
+                        sourceMap: true,
+                    })
+                ]
+            }
+        };
 
-    return {
-        devServer: {
-            publicPath: "/dist/"
-        },
+
+    return Object.assign({
         entry: {
             main: './src/index'
         },
         output: {
-            path: path.resolve(__dirname, 'dist'),
             filename: '[name].js',
             libraryTarget: 'umd'
         },
@@ -37,7 +41,12 @@ module.exports = function (env, argv) {
                 //.css 文件使用 style-loader 和 css-loader 来处理
                 {
                     test: /\.css$/,
-                    use: [
+                    use: IS_DEV ? [
+                        // 开发模式使用 style-loader 支持 hot reload (修改样式无刷新样式变更)
+                        'style-loader',
+                        'css-loader',
+                    ] : [
+                        // 生产环境CSS打包压缩
                         MiniCssExtractPlugin.loader,
                         'css-loader?minimize=true'
                     ]
@@ -54,23 +63,21 @@ module.exports = function (env, argv) {
                 {test: /\.html$/, use: ['html-loader']}
             ],
         },
-        plugins: plugins,
+        plugins: [
+            new webpack.ProvidePlugin({
+                $: 'jquery',
+                jQuery: 'jquery',
+            }),
+            new MiniCssExtractPlugin({
+                // Options similar to the same options in webpackOptions.output
+                // both options are optional
+                filename: "[name].css",
+                chunkFilename: "[id].css"
+            }),
+        ],
         externals: {
             jquery: "jQuery",
             jQuery: "jQuery"
         },
-        optimization: {
-            minimizer: [
-                new UglifyJSPlugin({
-                    uglifyOptions: {
-                        ie8: true,
-                        parse: {},
-                        mangle: {},
-                        compress: {},
-                    },
-                    sourceMap: true,
-                })
-            ]
-        }
-    };
+    }, extendOptions);
 };
