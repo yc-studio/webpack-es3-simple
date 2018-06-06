@@ -2,7 +2,7 @@
 var webpack = require('webpack'); //to access built-in plugins
 var path = require('path');
 var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
-
+var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = function (env, argv) {
 
@@ -10,6 +10,12 @@ module.exports = function (env, argv) {
         new webpack.ProvidePlugin({
             $: 'jquery',
             jQuery: 'jquery',
+        }),
+        new MiniCssExtractPlugin({
+            // Options similar to the same options in webpackOptions.output
+            // both options are optional
+            filename: "[name].css",
+            chunkFilename: "[id].css"
         }),
     ];
 
@@ -32,14 +38,18 @@ module.exports = function (env, argv) {
                 {
                     test: /\.css$/,
                     use: [
-                        'style-loader',
-                        'css-loader'
+                        MiniCssExtractPlugin.loader,
+                        'css-loader?minimize=true'
                     ]
                 },
                 //图片文件使用 url-loader 来处理，小于8kb的直接转为base64
                 {
-                    test: /\.(png|jpg)$/,
-                    use: 'url-loader?limit=1&name=assets/[name]-[hash:6].[ext]'
+                    test: /\.(png|jpg|gif|svg)(\?.*)?$/,
+                    use: ['url-loader?limit=1&name=assets/[name].[ext]?[hash:6]']
+                },
+                {
+                    test: /\.(woff|woff2|eot|ttf|svg)(\?.*)?$/,
+                    use: ['url-loader?limit=1&name=assets/[name].[ext]?[hash:6]']
                 },
                 {test: /\.html$/, use: ['html-loader']}
             ],

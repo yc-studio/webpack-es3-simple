@@ -4,7 +4,8 @@ console.log("test", test);
 
 var a = {
     default: 123, //IE 8 default 关键字测试
-    delete: 123, //IE 8 delete 关键字测试,"," 结尾测试
+    catch: 456,   //IE 8 catch 关键字测试
+    delete: 123,  //IE 8 delete 关键字测试,"," 结尾测试
 };
 
 /**
@@ -16,7 +17,7 @@ function xx(param1, param2) {
 
     var dd = 123;
     var ee = {
-        default: 123
+        default: 123,
     };
     try {
         console.log(dd, ee);
