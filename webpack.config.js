@@ -1,6 +1,6 @@
 // var HtmlWebpackPlugin = require('html-webpack-plugin'); //installed via npm
 var webpack = require('webpack'); //to access built-in plugins
-var UglifyJSPlugin = require('uglifyjs-webpack-plugin')
+var TerserPlugin = require('terser-webpack-plugin'); // uglify-webpack-plugin => terser-webpack-plugin
 var MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = function (env, argv) {
@@ -16,8 +16,8 @@ module.exports = function (env, argv) {
             mode: 'production',
             optimization: {
                 minimizer: [
-                    new UglifyJSPlugin({
-                        uglifyOptions: {
+                    new TerserPlugin({
+                        terserOptions: {
                             ie8: true,
                         },
                         sourceMap: true,
