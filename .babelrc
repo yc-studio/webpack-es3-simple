@@ -1,0 +1,28 @@
+{
+    "presets": [
+        [
+            "@babel/env",
+            {
+                "targets": {
+                    "browsers": [
+                        "ie >= 7"
+                    ],
+                    "ie": "8"
+                },
+                "loose": true,
+//                "useBuiltIns": "usage"
+//                "exclude": [
+//                    "es6.symbol"
+//                ],
+//                "modules": false
+            }
+        ]
+    ],
+    "plugins": [
+//        "@babel/plugin-proposal-async-generator-functions",
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-proposal-class-properties"
+    ]
+}
