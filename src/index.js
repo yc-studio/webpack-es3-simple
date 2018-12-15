@@ -25,7 +25,17 @@ function xx(param1, param2) {
     } catch (UglifyExceptionTest) {  //Uglify压缩时,对IE8 支持测试
         param2(UglifyExceptionTest);
     }
+
 }
+
+
+setTimeout(function() {
+  require.ensure(['./async-test'], function () {
+      var m = require('./async-test');
+    console.log("async loaded", m)
+  })
+}, 1000)
+
 
 xx(1,  function () {
 });
