@@ -1,51 +1,35 @@
-import {default as test, Test} from './test';
-import './assets/index.scss';
+// import {Test, TestConst} from './test';
+const {Test, TestConst} = require('./test-es6'); // IE8 无法使用 import/export
+const test = TestConst;
+require('./assets/index.scss');
 
-console.log("test", test, Test);
-//
-const test2 = {
+const {testAsync} = require('./test-async');
+
+console.log("test: ", test, Test);
+
+const testIE8Keywords = {
     default: 123, //IE 8 default 关键字测试
     catch: 456,   //IE 8 catch 关键字测试
     delete: 123,  //IE 8 delete 关键字测试,"," 结尾测试
 };
 
-function testPromise() {
-    return new Promise((resolve) => {
-        setTimeout(() => resolve('async OK'), 1000);
-    });
-}
-
-async function testAsync() {
-    const result = await testPromise();
-    console.log(result);
-
-    return result;
-}
-
-function xx(param1, param2, ...param3) {
-
-    let dd = 123;
+function xx(param1, param2) {
     let ee = {
-        default: 123,
+        param1,
+        param2,
     };
     try {
-        console.log(dd, ee, param3);
+        console.log('try ', ee);
         throw new Error(param1);
     } catch (UglifyExceptionTest) {  //Uglify压缩时,对IE8 支持测试
-        param2(UglifyExceptionTest);
+        console.log('Throw error: ', UglifyExceptionTest);
     }
 }
 
-xx(1, () => {
-    console.log(test2);
-}, 1, 2, 3);
+xx(111, 222);
 
-const asyncResult = testAsync();
-console.log(asyncResult);
+console.log('IE8 obj Keywords: ', testIE8Keywords);
 
-// $(() => $('body').append('<span> ES3 OK </span>'));
+testAsync();
 
-export default {
-    xx,
-    test2
-};
+$(() => $('body').append('<span> ES3 OK </span>'));

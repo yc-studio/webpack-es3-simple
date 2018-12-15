@@ -51,6 +51,7 @@
     }
   },
   "browserslist": [
-    "IE 8"
+    "IE >= 8",
+    "chrome >= 30"
   ]
 }

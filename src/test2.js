@@ -1,3 +1,7 @@
 console.log('async import');
 
-export default 123123;
+const ASYNC = 'test2 async';
+
+module.exports = {
+    ASYNC
+};

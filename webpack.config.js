@@ -12,11 +12,15 @@ function resolve(name) {
     return path.resolve(__dirname, name);
 }
 
+function assets(name) {
+    return 'assets/' + name;
+}
+
 module.exports = function (env, argv) {
-    var IS_DEV = env && env.mode === 'development';
+    let IS_DEV = env && env.mode === 'development';
     console.log('Dev: ', IS_DEV);
 
-    var extendOptions = IS_DEV ? {
+    let extendOptions = IS_DEV ? {
         mode: 'development',
         devtool: 'cheap-module-source-map',
         devServer: {
@@ -44,17 +48,6 @@ module.exports = function (env, argv) {
         module: {
             rules: [
                 {
-                    test: /\.js$/,
-                    use: ['eslint-loader'],
-                    enforce: 'pre',
-                    include: [resolve('src')],
-                },
-                {
-                    test: /\.js$/,
-                    use: ['babel-loader'],
-                    include: [resolve('src')],
-                },
-                {
                     test: /\.(sa|sc|c)ss$/,
                     use: [
                         // 生产环境CSS打包压缩
@@ -72,46 +65,53 @@ module.exports = function (env, argv) {
                 from: resolve('public'),
             }]),
             new MiniCssExtractPlugin({
-                // Options similar to the same options in webpackOptions.output
-                // both options are optional
-                filename: "[name].css",
-                chunkFilename: "[id].css"
+                filename: assets("[name].[hash:6].min.css"),
+                chunkFilename: assets("[id].[hash:6].min.css"),
             }),
         ],
         optimization: {
             minimizer: [
-                // new TerserPlugin({
-                //     terserOptions: {
-                //         ie8: true,
-                //     },
-                //     sourceMap: true,
-                // }),
-                // new OptimizeCSSAssetsPlugin(),
+                new TerserPlugin({
+                    terserOptions: {
+                        ie8: true,
+                    },
+                    sourceMap: true,
+                }),
+                new OptimizeCSSAssetsPlugin(),
             ]
         }
     };
-
-
 
     const options = {
         entry: {
             main: '@/index'
         },
         output: {
-            filename: '[name].js',
+            filename: assets('[name].[hash:6].js'),
             // libraryTarget: 'umd'
         },
         module: {
             //加载器配置
             rules: [
+                {
+                    test: /\.js$/,
+                    use: ['eslint-loader'],
+                    enforce: 'pre',
+                    include: [resolve('src')],
+                },
+                {
+                    test: /\.js$/,
+                    use: ['babel-loader'],
+                    include: [resolve('src')],
+                },
                 //图片文件使用 url-loader 来处理，小于8kb的直接转为base64
                 {
                     test: /\.(png|jpg|gif|svg)(\?.*)?$/,
-                    use: ['url-loader?limit=1&name=assets/[name].[ext]?[hash:6]']
+                    use: ['url-loader?limit=1&name=' + assets('[name].[hash:6].[ext]')]
                 },
                 {
                     test: /\.(woff|woff2|eot|ttf|svg)(\?.*)?$/,
-                    use: ['url-loader?limit=1&name=assets/[name].[ext]?[hash:6]']
+                    use: ['url-loader?limit=1&name=' + assets('[name].[hash:6].[ext]')]
                 },
                 {test: /\.html$/, use: ['html-loader']}
             ],
@@ -122,24 +122,30 @@ module.exports = function (env, argv) {
                 jQuery: 'jquery',
             }),
 
-            function (compiler) {
-                // console.log(compiler.hooks.compilation);
-                // process.exit();
+            new HtmlWebpackPlugin({
+                filename: 'index.html',
+                template: resolve('public/index.html')
+            }),
 
-                compiler.hooks.compilation.tap('Es3Compat', function(compilation) {
-                    compilation.mainTemplate.hooks.requireExtensions.tap('MainTemplate', function (source, chunk, hash) {
-                        console.log(source.split("\n"));
-                        process.exit();
-                        //
-                        const lines = source.split("\n");
-                        lines[10] = "exports[name] = getter(); // Es3 Fixed";
-                        lines[16] = lines[17] = lines[18] = '';
-                        lines[19] = "exports.__esModule = true; // Es3 Fixed";
+            // function (compiler) {
+            // console.log(compiler.hooks.compilation);
+            // process.exit();
 
-                        return lines.join("\n");
-                    });
-                });
-            }
+            // // 尝试让 IE8 支持 import/export
+            // compiler.hooks.compilation.tap('Es3Compat', function(compilation) {
+            //     compilation.mainTemplate.hooks.requireExtensions.tap('MainTemplate', function (source, chunk, hash) {
+            //         console.log(source.split("\n"));
+            //         process.exit();
+            //         //
+            //         const lines = source.split("\n");
+            //         lines[10] = "exports[name] = getter(); // Es3 Fixed";
+            //         lines[16] = lines[17] = lines[18] = '';
+            //         lines[19] = "exports.__esModule = true; // Es3 Fixed";
+            //
+            //         return lines.join("\n");
+            //     });
+            // });
+            // }
         ],
         resolve: {
             alias: {
@@ -161,5 +167,4 @@ module.exports = function (env, argv) {
     // console.log(extendOptions);
     // process.exit();
     return options;
-
 };

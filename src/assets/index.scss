@@ -5,5 +5,14 @@ body {
 
     h1 {
         font-size: 20px;
+        color: #FFF;
+        background: rgba(0, 0, 0, 0.5);
+    }
+    h2 {
+        background: #000;
+        color: #FFF;
+        opacity: 0.5;
+        flex: content;
+        user-select: text; // Test autoprefixer
     }
 }
