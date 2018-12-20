@@ -1,12 +1,12 @@
 const path = require('path');
 const webpack = require('webpack');
-const TerserPlugin = require('terser-webpack-plugin');
+const UglifyjsPlugin = require('uglifyjs-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const mergeWith = require('lodash/mergeWith');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+// const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 
 function resolve(name) {
     return path.resolve(__dirname, name);
@@ -19,9 +19,10 @@ function assets(name) {
 module.exports = function (env, argv) {
     let IS_DEV = env && env.mode === 'development';
     console.log('Dev: ', IS_DEV);
+    // console.log(env, argv);
+    // process.exit();
 
     let extendOptions = IS_DEV ? {
-        mode: 'development',
         devtool: 'cheap-module-source-map',
         devServer: {
             host: '0.0.0.0',
@@ -44,18 +45,19 @@ module.exports = function (env, argv) {
             ]
         }
     } : {
-        mode: 'production',
         module: {
             rules: [
                 {
                     test: /\.(sa|sc|c)ss$/,
-                    use: [
-                        // 生产环境CSS打包压缩
-                        MiniCssExtractPlugin.loader,
-                        'css-loader',
-                        'postcss-loader',
-                        'sass-loader',
-                    ]
+                    use:  ExtractTextPlugin.extract({
+                        fallback: "style-loader",
+                        use: [
+                            // 生产环境CSS打包压缩
+                            'css-loader?minimize=1',
+                            'postcss-loader',
+                            'sass-loader',
+                        ]
+                    })
                 },
             ]
         },
@@ -64,41 +66,37 @@ module.exports = function (env, argv) {
             new CopyWebpackPlugin([{
                 from: resolve('public'),
             }]),
-            new MiniCssExtractPlugin({
-                filename: assets("[name].[hash:6].min.css"),
-                chunkFilename: assets("[id].[hash:6].min.css"),
+            new UglifyjsPlugin({
+                uglifyOptions: {
+                    ie8: true,
+                },
+                sourceMap: true,
             }),
+            new ExtractTextPlugin({
+                filename: assets('css/[name].[hash:6].css'),
+            }),
+            // new OptimizeCSSAssetsPlugin(),
         ],
-        optimization: {
-            minimizer: [
-                new TerserPlugin({
-                    terserOptions: {
-                        ie8: true,
-                    },
-                    sourceMap: true,
-                }),
-                new OptimizeCSSAssetsPlugin(),
-            ]
-        }
     };
 
-    const options = {
+    let options = {
         entry: {
-            main: '@/index'
+            index: ["babel-polyfill", '@/index']
         },
         output: {
+            path: resolve('dist'),
             filename: assets('[name].[hash:6].js'),
             // libraryTarget: 'umd'
         },
         module: {
             //加载器配置
             rules: [
-                {
-                    test: /\.js$/,
-                    use: ['eslint-loader'],
-                    enforce: 'pre',
-                    include: [resolve('src')],
-                },
+                // {
+                //     test: /\.js$/,
+                //     use: ['eslint-loader'],
+                //     enforce: 'pre',
+                //     include: [resolve('src')],
+                // },
                 {
                     test: /\.js$/,
                     use: ['babel-loader'],
@@ -157,7 +155,7 @@ module.exports = function (env, argv) {
         },
     };
 
-    mergeWith(options, extendOptions, (objValue, srcValue) => {
+    options = mergeWith(extendOptions, options, (objValue, srcValue) => {
         if (Array.isArray(objValue)) {
             return objValue.concat(srcValue);
         }

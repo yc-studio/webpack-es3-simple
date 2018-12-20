@@ -1,7 +1,7 @@
-// import {Test, TestConst} from './test';
-const {Test, TestConst} = require('./test-es6'); // IE8 无法使用 import/export
-const test = TestConst;
-require('./assets/index.scss');
+import Test, {TestConst as test} from './test-es6';
+// const {Test, TestConst} = require('./test-es6'); // IE8 无法使用 import/export
+// const test = TestConst;
+import './assets/index.scss';
 
 const {testAsync} = require('./test-async');
 
