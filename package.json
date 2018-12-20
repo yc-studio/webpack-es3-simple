@@ -26,7 +26,6 @@
     "copy-webpack-plugin": "^4.5.0",
     "cross-env": "^5.0.5",
     "css-loader": "^0.28.11",
-    "es3ify-webpack-plugin-v2": "^0.0.2",
     "extract-text-webpack-plugin": "^3.0.2",
     "file-loader": "^2.0.0",
     "html-loader": "^0.5.5",
