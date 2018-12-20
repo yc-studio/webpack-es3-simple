@@ -71,13 +71,13 @@ module.exports = function (env, argv) {
         ],
         optimization: {
             minimizer: [
-                new TerserPlugin({
-                    terserOptions: {
-                        ie8: true,
-                    },
-                    sourceMap: true,
-                }),
-                new OptimizeCSSAssetsPlugin(),
+                // new TerserPlugin({
+                //     terserOptions: {
+                //         ie8: true,
+                //     },
+                //     sourceMap: true,
+                // }),
+                // new OptimizeCSSAssetsPlugin(),
             ]
         }
     };
@@ -101,7 +101,13 @@ module.exports = function (env, argv) {
                 },
                 {
                     test: /\.js$/,
-                    use: ['babel-loader'],
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            // cacheDirectory: resolve('.tmp'),
+                            // babelrc: true,
+                        }
+                    },
                     include: [resolve('src')],
                 },
                 //图片文件使用 url-loader 来处理，小于8kb的直接转为base64
@@ -117,10 +123,10 @@ module.exports = function (env, argv) {
             ],
         },
         plugins: [
-            new webpack.ProvidePlugin({
-                $: 'jquery',
-                jQuery: 'jquery',
-            }),
+            // new webpack.ProvidePlugin({
+            //     $: 'jquery',
+            //     jQuery: 'jquery',
+            // }),
 
             new HtmlWebpackPlugin({
                 filename: 'index.html',
@@ -153,7 +159,7 @@ module.exports = function (env, argv) {
             }
         },
         externals: {
-            jquery: "jQuery" // import $ from 'jquery';  window.jQuery;
+            // jquery: "jQuery" // import $ from 'jquery';  window.jQuery;
         },
     };
 

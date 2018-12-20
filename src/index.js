@@ -1,9 +1,10 @@
-// import {Test, TestConst} from './test';
-const {Test, TestConst} = require('./test-es6'); // IE8 无法使用 import/export
-const test = TestConst;
+// import $ from 'jquery';
+import {Test, TestConst as test} from './test-es6';
+// const {Test, TestConst} = require('./test-es6'); // IE8 无法使用 import/export
+// const test = TestConst;
 require('./assets/index.scss');
 
-const {testAsync} = require('./test-async');
+import {testAsync} from  './test-async';
 
 console.log("test: ", test, Test);
 
@@ -26,10 +27,10 @@ function xx(param1, param2) {
     }
 }
 
-xx(111, 222);
+xx(111, () => 222);
 
 console.log('IE8 obj Keywords: ', testIE8Keywords);
 
 testAsync();
 
-$(() => $('body').append('<span> ES3 OK </span>'));
+// $(() => $('body').append('<span> ES3 OK </span>'));
