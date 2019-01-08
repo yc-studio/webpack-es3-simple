@@ -3,7 +3,7 @@ module.exports = {
     "parser": "babel-eslint",
     parserOptions: {
         "sourceType": "module",
-        "allowImportExportEverywhere": false,
+        "allowImportExportEverywhere": true,
         // "codeFrame": true,
         "ecmaVersion": 2017,
     },
