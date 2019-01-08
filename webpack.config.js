@@ -18,6 +18,7 @@ function assets(name) {
 
 module.exports = function (env, argv) {
     let IS_DEV = env && env.mode === 'development';
+    const DEBUG  = env && env.debug;
     console.log('Dev: ', IS_DEV);
     // console.log(env, argv);
     // process.exit();
@@ -61,7 +62,11 @@ module.exports = function (env, argv) {
                 },
             ]
         },
-        plugins: [
+        plugins: DEBUG ? [
+            new ExtractTextPlugin({
+                filename: assets('css/[name].[hash:6].css'),
+            }),
+        ]:[
             new CleanWebpackPlugin(['dist']),
             new CopyWebpackPlugin([{
                 from: resolve('public'),
@@ -81,7 +86,7 @@ module.exports = function (env, argv) {
 
     let options = {
         entry: {
-            index: ["babel-polyfill", '@/index']
+            index: [/*"babel-polyfill",*/ '@/index']
         },
         output: {
             path: resolve('dist'),

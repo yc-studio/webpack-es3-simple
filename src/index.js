@@ -3,9 +3,10 @@ import Test, {TestConst as test} from './test-es6';
 // const test = TestConst;
 import './assets/index.scss';
 
-const {testAsync} = require('./test-async');
+import {testAsync} from './test-async';
+import TEST_ASYNC from './test2';
 
-console.log("test: ", test, Test);
+console.log("test: ", test, Test, TEST_ASYNC);
 
 const testIE8Keywords = {
     default: 123, //IE 8 default 关键字测试
