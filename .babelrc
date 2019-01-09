@@ -7,10 +7,18 @@
                     "ie": "8"
                 },
                 "loose": true,
-                //                "useBuiltIns": "usage"  //IE 8 会要求导入 PromisePoliffy 会使用 import 语法， IE 8无法支持
-                //                "exclude": [
-                //                    "es6.symbol"
-                //                ],
+                "useBuiltIns": "usage",  //IE 8 会要求导入 PromisePoliffy 会使用 import 语法， IE 8无法支持
+//                "include": [
+//                    "es6.promise",
+//                ],
+                "exclude": [
+                    "es6.symbol",
+                    "es6.array.*",
+                    "es7.array.*",
+                    "es6.object.*",
+                    "es7.object.*",
+                    "es6.math.*"
+                ],
                 "modules": "commonjs"
             }
         ]

@@ -15,16 +15,16 @@
     "jquery": "^1 || ^2 || ^3.2.1"
   },
   "devDependencies": {
-    "autoprefixer": "^9.4.2",
-    "axios": "^0.18.0",
     "@babel/cli": "^7.2.0",
     "@babel/core": "^7.1.2",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/plugin-transform-flow-strip-types": "^7.0.0",
     "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/polyfill": "^7.2.5",
     "@babel/preset-env": "^7.2.0",
     "@babel/runtime": "^7.2.0",
+    "autoprefixer": "^9.4.2",
     "babel-loader": "^8.0",
     "clean-webpack-plugin": "^0.1.19",
     "console-polyfill": "^0.2.2",
