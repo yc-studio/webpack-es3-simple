@@ -4,8 +4,8 @@
   "description": "",
   "main": "./dist/main.js",
   "scripts": {
-    "build": "webpack ",
-    "start": "webpack-dev-server --mode=development --hot --inline",
+    "build": "webpack -p",
+    "start": "webpack-dev-server --env.mode=development --hot --inline",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix"
   },

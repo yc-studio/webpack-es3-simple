@@ -17,7 +17,8 @@ function assets(name) {
 }
 
 module.exports = function (env, argv) {
-    let IS_DEV = env && env.mode === 'development';
+    const IS_DEV = env && env.mode === 'development';
+    const DEBUG  = env && env.debug;
     console.log('Dev: ', IS_DEV);
 
     let extendOptions = IS_DEV ? {
@@ -71,13 +72,13 @@ module.exports = function (env, argv) {
         ],
         optimization: {
             minimizer: [
-                // new TerserPlugin({
-                //     terserOptions: {
-                //         ie8: true,
-                //     },
-                //     sourceMap: true,
-                // }),
-                // new OptimizeCSSAssetsPlugin(),
+                new TerserPlugin({
+                    terserOptions: {
+                        ie8: true,
+                    },
+                    sourceMap: true,
+                }),
+                new OptimizeCSSAssetsPlugin(),
             ]
         }
     };
@@ -132,26 +133,6 @@ module.exports = function (env, argv) {
                 filename: 'index.html',
                 template: resolve('public/index.html')
             }),
-
-            // function (compiler) {
-            // console.log(compiler.hooks.compilation);
-            // process.exit();
-
-            // // 尝试让 IE8 支持 import/export
-            // compiler.hooks.compilation.tap('Es3Compat', function(compilation) {
-            //     compilation.mainTemplate.hooks.requireExtensions.tap('MainTemplate', function (source, chunk, hash) {
-            //         console.log(source.split("\n"));
-            //         process.exit();
-            //         //
-            //         const lines = source.split("\n");
-            //         lines[10] = "exports[name] = getter(); // Es3 Fixed";
-            //         lines[16] = lines[17] = lines[18] = '';
-            //         lines[19] = "exports.__esModule = true; // Es3 Fixed";
-            //
-            //         return lines.join("\n");
-            //     });
-            // });
-            // }
         ],
         resolve: {
             alias: {

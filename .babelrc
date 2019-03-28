@@ -1,0 +1,34 @@
+{
+    "presets": [
+        [
+            "@babel/env",
+            {
+                "targets": {
+                    "ie": "8"
+                },
+                "loose": true,
+                // 不使用 useBuiltIns
+                // 而使用 HTML hack 方式, 按需加载 poliffy
+                // 参考: https://polyfill.io/
+                //                "useBuiltIns": "usage",  //IE 8 会要求导入 PromisePoliffy 会使用 import 语法， IE 8无法支持
+                "modules": "commonjs"
+            }
+        ]
+    ],
+    "plugins": [
+        //        "@babel/plugin-proposal-async-generator-functions",
+        [
+            "@babel/plugin-transform-runtime",
+            {
+                //                "corejs": false,
+                //                "helpers": true,
+                //                "regenerator": false,
+                //                "useESModules": false
+            }
+        ],
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-proposal-class-properties",
+        //        ["@babel/plugin-transform-modules-commonjs", {"loose": true}]
+    ]
+}
