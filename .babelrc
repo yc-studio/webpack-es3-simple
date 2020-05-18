@@ -10,7 +10,19 @@
                 // 不使用 useBuiltIns
                 // 而使用 HTML hack 方式, 按需加载 poliffy
                 // 参考: https://polyfill.io/
+
                 //                "useBuiltIns": "usage",  //IE 8 会要求导入 PromisePoliffy 会使用 import 语法， IE 8无法支持
+                //                "include": [
+                //                    "es6.promise",
+                //                ],
+                //                "exclude": [
+                //                    "es6.symbol",
+                //                    "es6.array.*",
+                //                    "es7.array.*",
+                //                    "es6.object.*",
+                //                    "es7.object.*",
+                //                    "es6.math.*"
+                //                ],
                 "modules": "commonjs"
             }
         ]
